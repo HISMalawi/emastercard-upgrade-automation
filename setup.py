@@ -60,9 +60,9 @@ def read_gitcmd_output(repo, command):
 
 def read_tag(repo):
     if FOLLOW_TAGS:
-        return read_gitcmd_output('{}'.format(repo), 'describe --tags')
+        return read_gitcmd_output(repo, 'describe --tags')
     else:
-        return None
+        return read_gitcmd_output(repo, 'reflog').split()[0]
 
 def build_emastercard_frontend(follow_tags):
     print('Building eMastercard frontend; this may take a while...')
@@ -90,7 +90,7 @@ def update_emastercard_frontent_config(deploy_path='tmp/e-Mastercard/public/conf
     print('Updating frontend configuration...')
     config = read_frontend_config()
     version = read_tag(os.getcwd()) or get_latest_commit_id()[:7]
-    config['version'] = 'docker-{}'.format(version)
+    config['version'] = '{}-dck'.format(version)
     save_frontend_config(config)
 
 IMAGE_NAMES = ['emastercard_api', 'nginx', 'mysql']
