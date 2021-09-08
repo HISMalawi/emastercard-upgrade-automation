@@ -13,8 +13,6 @@ services:
     image: emastercard_api
     volumes:
       - ./api/api-config.yml:/opt/BHT-EMR-API/config/database.yml
-      - ./api/migration-config.yml:/opt/eMastercard2Nart/config.yaml
-      - ./tmp:/opt/eMastercard2Nart/tmp
     ports:
       - "9000:3000"
     depends_on:
