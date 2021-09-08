@@ -1,8 +1,8 @@
 {
-  "version": "v4.1.1-0",
+  "version": "MoHQ32021",
   "tags": {
-    "BHT-EMR-API": "v4.11.12-1-g2e2b51b8",
+    "BHT-EMR-API": "MoHQ32021",
     "eMastercard2Nart": "",
-    "e-Mastercard": "v4.1.1"
+    "e-Mastercard": "development"
   }
 }
