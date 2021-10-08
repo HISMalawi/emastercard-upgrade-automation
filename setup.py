@@ -152,7 +152,10 @@ def setup_dependencies():
     run('sudo apt-get install -y docker.io git')
     install_docker_compose()
     if REBUILD_FRONTEND:
-        run('sudo apt-get install -y nodejs npm')
+        try:
+            run('sudo apt-get install -y nodejs npm')
+        except: 
+            print('an erorr occured setting up node and npm')
     print('-----------------')
 
 SYSTEMD_SERVICE_TEMPLATE = '''
