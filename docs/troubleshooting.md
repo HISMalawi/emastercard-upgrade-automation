@@ -173,7 +173,7 @@ do this as follows:
 
 $ sudo docker-compose exec api bash
 
-$ cd /opt/BHT-EMR-API
+$ cd /opt/emr-DRC
 
 $ rails dbconsole   # Then enter database password
 

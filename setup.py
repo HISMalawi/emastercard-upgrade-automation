@@ -154,8 +154,8 @@ def setup_dependencies():
     run('sudo apt-get update', die_on_fail=False)
     run('sudo apt-get install -y docker.io git')
     install_docker_compose()
-    if REBUILD_FRONTEND and os.system('npm --version') != 0:
-        run('sudo apt-get install -y nodejs npm', die_on_fail=False) # Not sma
+    # if REBUILD_FRONTEND and os.system('npm --version') != 0:
+    #     run('sudo apt-get install -y nodejs npm', die_on_fail=False) # Not sma
     print('-----------------')
 
 SYSTEMD_SERVICE_TEMPLATE = '''
@@ -262,8 +262,8 @@ def build():
 
     if not OFFLINE:
         setup_dependencies()
-        tags['BHT-EMR-API'] = update_repo('https://github.com/HISMalawi/BHT-EMR-API.git', branch='development', tag=tags.get('BHT-EMR-API'))
-        os.chdir('tmp/BHT-EMR-API')
+        tags['emr-DRC'] = update_repo('https://github.com/egpaf-global/emr-DRC.git', branch='main', tag=tags.get('emr-DRC'))
+        os.chdir('tmp/emr-DRC')
         run('git describe > HEAD')
         os.chdir('../..')
         

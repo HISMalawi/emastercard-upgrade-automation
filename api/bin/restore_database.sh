@@ -6,12 +6,12 @@ if [ -t 0 ]; then
     exit 255
 fi
 
-USERNAME=`ruby -ryaml -e "puts YAML::load_file('/opt/BHT-EMR-API/config/database.yml')['development']['username']"`
-PASSWORD=`ruby -ryaml -e "puts YAML::load_file('/opt/BHT-EMR-API/config/database.yml')['development']['password']"`
-DATABASE=`ruby -ryaml -e "puts YAML::load_file('/opt/BHT-EMR-API/config/database.yml')['development']['database']"`
-HOST=`ruby -ryaml -e "puts YAML::load_file('/opt/BHT-EMR-API/config/database.yml')['development']['host']"`
+USERNAME=`ruby -ryaml -e "puts YAML::load_file('/opt/emr-DRC/config/database.yml')['development']['username']"`
+PASSWORD=`ruby -ryaml -e "puts YAML::load_file('/opt/emr-DRC/config/database.yml')['development']['password']"`
+DATABASE=`ruby -ryaml -e "puts YAML::load_file('/opt/emr-DRC/config/database.yml')['development']['database']"`
+HOST=`ruby -ryaml -e "puts YAML::load_file('/opt/emr-DRC/config/database.yml')['development']['host']"`
 
-cd /opt/BHT-EMR-API
+cd /opt/emr-DRC
 
 echo "Dropping existing database..."
 rails db:drop
@@ -23,6 +23,6 @@ echo "Restoring backup..."
 pv -f | mysql --user=$USERNAME --password=$PASSWORD --host=$HOST $DATABASE
 
 echo "Loading metadata..."
-cd /opt/BHT-EMR-API
+cd /opt/emr-DRC
 bin/update_art_metadata.sh development
 
