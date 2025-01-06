@@ -12,4 +12,5 @@ if [ ! -f "api/migration-config.yml" ]; then
     echo '# Override this file by contents from api/migration-config.yml.example' >  api/migration-config.yml
 fi
 
+
 docker-compose up

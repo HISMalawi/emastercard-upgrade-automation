@@ -1,0 +1,28 @@
+FROM ruby:3.2.0
+
+RUN apt-get update
+RUN apt-get install build-essential default-mysql-client default-libmysqlclient-dev pv redis-server -y
+
+RUN mkdir /opt/dde4
+COPY tmp/Demographics-Data-Exchange /opt/dde4
+WORKDIR /opt/dde4
+COPY tmp/Demographics-Data-Exchange/Gemfile /opt/dde4/Gemfile
+COPY tmp/Demographics-Data-Exchange/vendor /opt/dde4/vendor
+COPY /tmp/Demographics-Data-Exchange/config/sidekiq.yml.example /opt/dde4/config/sidekiq.yml
+RUN mkdir /opt/dde4/log
+RUN chmod +x /opt/dde4/log
+RUN bundle install --local
+COPY tmp/Demographics-Data-Exchange/config/puma.rb /opt/dde4/config/puma.rb
+WORKDIR /opt/dde4
+RUN cp /opt/dde4/config/database.yml.example config/database.yml && \
+    cp /opt/dde4/config/secrets.yml.example config/secrets.yml 
+
+
+# Run database setup commands
+RUN bundle exec rails db:create db:migrate db:seed
+
+# Expose application port
+EXPOSE 8005
+
+# Start the Rails server
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8005"]

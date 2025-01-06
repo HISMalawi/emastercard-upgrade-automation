@@ -1,5 +1,6 @@
 /api/api-config.yml
 /api/migration-config.yml
-/api/application.yml
+/dde/application.yml
+/dde/dde_database.yml
 /tmp/
 *.sql
