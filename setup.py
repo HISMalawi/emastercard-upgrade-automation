@@ -66,12 +66,13 @@ def read_tag(repo):
     else:
         return None
 
-def build_emastercard_frontend(follow_tags):
+def build_emastercard_frontend():
     print('Building eMastercard frontend; this may take a while...')
-    # update_emastercard_frontent_config(follow_tags=follow_tags)
-    os.chdir('tmp/EMC-Releases')
-    #run('npm install')
-    #run('npm run build')
+    os.chdir('tmp/emc-new-arch')
+    run('npm install --global @ionic/cli@latest')
+    run('npm install --global @vue/cli@latest')
+    run('npm install --legacy-peer-deps')
+    run('ionic build')
     os.chdir('../..')
     # os.system('ls')
     run('rm -Rv web/static/*')
@@ -275,7 +276,7 @@ def build():
         tags['eMastercard2Nart'] = update_repo('https://github.com/HISMalawi/eMastercard2Nart.git', branch='master', tag=tags.get('eMastercard2Nart'))
         if REBUILD_FRONTEND:
             tags['e-Mastercard'] = update_repo('https://github.com/EGPAFMalawiHIS/emc-new-arch.git', branch='main', tag=tags.get('e-Mastercard'))
-            build_emastercard_frontend(FOLLOW_TAGS)
+            build_emastercard_frontend()
 
         if UPDATE:
             version = update_version(version, tags)
