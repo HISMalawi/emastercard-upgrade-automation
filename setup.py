@@ -69,34 +69,20 @@ def read_tag(repo):
 def build_emastercard_frontend():
     print('Building eMastercard frontend; this may take a while...')
     os.chdir('tmp/emc-new-arch')
-    run('npm install --global @ionic/cli@latest')
-    run('npm install --global @vue/cli@latest')
+
+    if os.system('npm list -g @ionic/cli') != 0:
+        run('npm install --global @ionic/cli@latest')
+    if os.system('npm list -g @vue/cli') != 0:
+        run('npm install --global @vue/cli@latest')
+
     run('npm install --legacy-peer-deps')
     run('ionic build')
     os.chdir('../..')
-    # os.system('ls')
-    run('rm -Rv web/static/*')
-    run('cp -Rv tmp/EMC-Releases/* web/static')
-   #run('cp -v web/static/emc.config.json.example web/static/config.json')
+    print('Current directory:', os.getcwd())
+    if not os.path.exists('web/static'): os.makedirs('web/static')
+    if os.listdir('web/static'): run('rm -Rv web/static/*')
+    run('cp -Rv tmp/emc-new-arch/dist/* web/static')
     print('-----------------')
-
-# def update_emastercard_frontent_config(deploy_path='tmp/EMC-Releases/config.json', follow_tags=True):
-#     def get_latest_commit_id():
-#         return read_gitcmd_output('.', 'log').split()[1]
-                         
-#     def read_frontend_config():
-#         with open('web/config.json') as fin:
-#             return json.loads(fin.read())
-
-#     def save_frontend_config(config):
-#         with open(deploy_path, 'w') as fout:
-#             fout.write(json.dumps(config))
-
-#     print('Updating frontend configuration...')
-#     config = read_frontend_config()
-#     version = read_tag(os.getcwd()) or get_latest_commit_id()[:7]
-#     config['version'] = 'docker-{}'.format(version)
-#     save_frontend_config(config)
 
 IMAGE_NAMES = ['emastercard_api', 'nginx', 'mysql', 'dde']
 
