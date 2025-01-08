@@ -4,25 +4,42 @@ RUN apt-get update
 RUN apt-get install build-essential default-mysql-client default-libmysqlclient-dev pv redis-server -y
 
 RUN mkdir /opt/dde4
-COPY tmp/Demographics-Data-Exchange /opt/dde4
 WORKDIR /opt/dde4
-COPY tmp/Demographics-Data-Exchange/Gemfile /opt/dde4/Gemfile
-COPY tmp/Demographics-Data-Exchange/vendor /opt/dde4/vendor
-COPY /tmp/Demographics-Data-Exchange/config/sidekiq.yml.example /opt/dde4/config/sidekiq.yml
+
 RUN mkdir /opt/dde4/log
 RUN chmod +x /opt/dde4/log
+
+COPY tmp/Demographics-Data-Exchange/Gemfile /opt/dde4/Gemfile
+COPY tmp/Demographics-Data-Exchange/vendor /opt/dde4/vendor
 RUN bundle install --local
-COPY tmp/Demographics-Data-Exchange/config/puma.rb /opt/dde4/config/puma.rb
+COPY tmp/Demographics-Data-Exchange /opt/dde4
+COPY dde/puma.rb /opt/dde4/config/puma.rb
+
+COPY dde/bin/backup_database.sh /usr/bin/dde_backup_database.sh
+RUN chmod +x /usr/bin/dde_backup_database.sh
+
+COPY dde/bin/change_database_password.sh /usr/bin/dde_change_database_password.sh
+RUN chmod +x /usr/bin/dde_change_database_password.sh
+
+COPY dde/bin/entrypoint.sh /usr/bin/dde_entrypoint.sh
+RUN chmod +x /usr/bin/dde_entrypoint.sh
+
+COPY dde/bin/initialize_database.sh /usr/bin/dde_initialize_database.sh
+RUN chmod +x /usr/bin/dde_backup_database.sh
+
+COPY dde/bin/migration.sh /usr/bin/dde_migration.sh
+RUN chmod +x /usr/bin/dde_migration.sh
+
+COPY dde/bin/restore_database.sh /usr/bin/dde_restore_database.sh
+RUN chmod +x /usr/bin/dde_restore_database.sh
+
 WORKDIR /opt/dde4
-RUN cp /opt/dde4/config/database.yml.example config/database.yml && \
-    cp /opt/dde4/config/secrets.yml.example config/secrets.yml 
+RUN cp config/database.yml.example config/database.yml && \
+    cp config/secrets.yml.example config/secrets.yml && \
+    cp config/schedule.yml.example config/schedule.yml
 
-
-# Run database setup commands
-RUN bundle exec rails db:create db:migrate db:seed
-
-# Expose application port
+ENTRYPOINT ["dde_entrypoint.sh"]
 EXPOSE 8005
 
 # Start the Rails server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8005"]
+CMD ["rails", "s", "-b", "0.0.0.0", "-p", "8005"]

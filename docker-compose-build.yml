@@ -21,34 +21,38 @@ services:
       - "9000:3000"
     depends_on:
       - mysqldb
+      - dde
     environment:
       WEB_CONCURRENCY: 6
       RAILS_MAX_THREADS: 5
       RAILS_MIN_THREADS: 1
     links:
       - mysqldb:mysqldb
+      - dde:dde
   
-  dde4:
+  dde:
     build:
       context: ./
       dockerfile: Dockerfile.dde
-    container_name: dde4
+    container_name: emastercard_dde
     volumes:
-      - ./dde/dde_database.yml:/opt/dde4/config/database.yml
-      - ./tmp/Demographics-Data-Exchange/schedule.yml:/opt/dde4/config/schedule.yml
-      - ./tmp/Demographics-Data-Exchange/sidekiq.yml.example:/opt/dde4/config/sidekiq.yml
+      - ./dde/sidekiq.yml:/opt/dde4/config/sidekiq.yml
+      - ./dde/database.yml:/opt/dde4/config/database.yml
 
     ports:
       - "8005:8050"
     depends_on:
       - mysqldb
-      - redis
-      - sidekiq
+      - redisdb
     environment:
       RAILS_ENV: production
       WEB_CONCURRENCY: 6
       RAILS_MAX_THREADS: 5
       RAILS_MIN_THREADS: 1
+      REDIS_URL: redis://localhost:6379/0
+    links:
+      - mysqldb:mysqldb
+      - redisdb:redisdb
 
   web:
     image: nginx
@@ -59,30 +63,13 @@ services:
     ports:
       - "8000:80"
 
-  redis:
-    image: redis:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.dde
-    container_name: dde_redis
-    command: ["redis-server", "--bind", "127.0.0.1"]
+  redisdb:
+    image: redis
+    container_name: emastercard_redis
     ports:
       - "6379:6379"
     volumes:
       - redis-data:/data
-  
-  sidekiq:
-    image: sidekiq
-    build:
-      context: .
-      dockerfile: Dockerfile.dde
-    container_name: sidekiq
-    command: bundle exec sidekiq
-    depends_on:
-      - redis
-    environment:
-      REDIS_URL: redis://localhost:6379/0
-      RAILS_ENV: production
 
 volumes:
   redis-data:

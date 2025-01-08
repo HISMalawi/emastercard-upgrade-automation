@@ -84,7 +84,7 @@ def build_emastercard_frontend():
     run('cp -Rv tmp/emc-new-arch/dist/* web/static')
     print('-----------------')
 
-IMAGE_NAMES = ['emastercard_api', 'nginx', 'mysql', 'dde']
+IMAGE_NAMES = ['emastercard_api', 'nginx', 'mysql', 'redis' 'emastercard_dde']
 
 def make_offline_package():
     print('Dumping docker images...')
