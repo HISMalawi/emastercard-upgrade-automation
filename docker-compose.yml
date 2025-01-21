@@ -11,6 +11,8 @@ services:
       - /opt/emastercard/db_eight:/var/lib/mysql
     ports:
       - "3305:3306"
+    networks:
+      - dde_network
  
   api:
     image: emastercard_api
@@ -28,6 +30,8 @@ services:
       WEB_CONCURRENCY: 6
       RAILS_MAX_THREADS: 5
       RAILS_MIN_THREADS: 1
+    networks:
+      - dde_network
  
   web:
     image: nginx
@@ -37,3 +41,9 @@ services:
       - ./web/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "8000:80"
+    networks:
+      - dde_network
+
+networks:
+  dde_network:
+    external: true

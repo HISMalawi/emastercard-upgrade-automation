@@ -106,7 +106,10 @@ def load_images():
       
 def build_docker_container():
     print('Building docker container...')
-    run('sudo docker-compose -f docker-compose-build.yml build --pull')
+    network_name = "dde_network"
+    if os.system(f"sudo docker network inspect {network_name} > /dev/null 2>&1") != 0:
+        run(f"sudo docker network create {network_name}")
+    run('sudo docker-compose -f docker-compose-build.yml -f /var/www/dde4/docker-compose.yml build --pull')
     print('-----------------')
     
 def check_docker_compose_version(target_version):
@@ -243,7 +246,7 @@ def build():
 
     if not OFFLINE:
         setup_dependencies()
-        tags['BHT-EMR-API'] = update_repo('https://github.com/HISMalawi/BHT-EMR-API.git', branch='development', tag=tags.get('BHT-EMR-API'))
+        tags['BHT-EMR-API'] = update_repo('https://github.com/HISMalawi/BHT-EMR-API.git', branch='emc_dde', tag=tags.get('BHT-EMR-API'))
         os.chdir('tmp/BHT-EMR-API')
         run('git describe > HEAD')
         os.chdir('../..')
