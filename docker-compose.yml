@@ -32,7 +32,7 @@ services:
   dde:
     image: emastercard_dde
     container_name: emastercard_dde
-    volumnes: 
+    volumes: 
       - ./dde/database.yml:/opt/dde4/config/database.yml
       - ./dde/application.yml:/opt/dde4/config/application.yml
       - ./dde/sidekiq.yml:/opt/dde4/config/sidekiq.yml
