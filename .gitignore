@@ -4,5 +4,5 @@
 /dde/dde_database.yml
 /tmp/
 *.sql
-./dde/database.yml
-./dde/sidekiq.yml
+dde/database.yml
+dde/sidekiq.yml
