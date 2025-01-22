@@ -11,8 +11,6 @@ services:
       - /opt/emastercard/db_eight:/var/lib/mysql
     ports:
       - "3305:3306"
-    networks:
-      - dde_network
  
   api:
     image: emastercard_api
@@ -26,12 +24,36 @@ services:
       - "9000:3000"
     depends_on:
       - mysqldb
+    links:
+      - mysqldb:mysqldb
     environment:
       WEB_CONCURRENCY: 6
       RAILS_MAX_THREADS: 5
       RAILS_MIN_THREADS: 1
-    networks:
-      - dde_network
+  
+  dde:
+    image: emastercard_dde
+    container_name: emastercard_dde
+    volumnes: 
+      - ./dde/database.yml:/opt/dde4/config/database.yml
+      - ./dde/application.yml:/opt/dde4/config/application.yml
+      - ./dde/sidekiq.yml:/opt/dde4/config/sidekiq.yml
+    ports:
+      - "9001:8005"
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb:mysqldb
+    environment:
+      WEB_CONCURRENCY: 6
+      RAILS_MAX_THREADS: 5
+      RAILS_MIN_THREADS: 1
+
+  redis:
+    image: redis
+    container_name: emastercard_redis
+    ports:
+      - "9002:6379"
  
   web:
     image: nginx
@@ -43,7 +65,3 @@ services:
       - "8000:80"
     networks:
       - dde_network
-
-networks:
-  dde_network:
-    external: true
