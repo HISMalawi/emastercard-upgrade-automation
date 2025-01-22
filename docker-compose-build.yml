@@ -14,7 +14,7 @@ services:
  
   api:
     build:
-      context: ./api
+      context: ./
       dockerfile: Dockerfile
     image: emastercard_api:latest
     container_name: emastercard_api
@@ -36,7 +36,7 @@ services:
   
   dde:
     build:
-      context: ./dde
+      context: ./
       dockerfile: Dockerfile.dde 
     image: emastercard_dde:latest
     container_name: emastercard_dde
