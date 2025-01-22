@@ -13,7 +13,10 @@ services:
       - "3305:3306"
  
   api:
-    image: emastercard_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: emastercard_api:latest
     container_name: emastercard_api
     volumes:
       - ./api/api-config.yml:/opt/BHT-EMR-API/config/database.yml
@@ -32,7 +35,10 @@ services:
       RAILS_MIN_THREADS: 1
   
   dde:
-    image: emastercard_dde
+    build:
+      context: ./dde
+      dockerfile: Dockerfile.dde 
+    image: emastercard_dde:latest
     container_name: emastercard_dde
     volumes: 
       - ./dde/database.yml:/opt/dde4/config/database.yml
