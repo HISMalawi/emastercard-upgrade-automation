@@ -1,7 +1,7 @@
 FROM ruby:3.2.0
 
 RUN apt-get update
-RUN apt-get install build-essential default-mysql-client default-libmysqlclient-dev pv -y
+RUN apt-get install build-essential default-mysql-client default-libmysqlclient-dev pv vim -y
 
 RUN mkdir /opt/BHT-EMR-API
 WORKDIR /opt/BHT-EMR-API
