@@ -109,7 +109,7 @@ def build_docker_container():
     network_name = "dde_network"
     if os.system(f"sudo docker network inspect {network_name} > /dev/null 2>&1") != 0:
         run(f"sudo docker network create {network_name}")
-    run('sudo docker-compose -f docker-compose-build.yml -f build --pull')
+    run('sudo docker-compose -f docker-compose-build.yml build --pull')
     print('-----------------')
     
 def check_docker_compose_version(target_version):
