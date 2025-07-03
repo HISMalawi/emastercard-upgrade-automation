@@ -1,0 +1,42 @@
+# Mysql configurations
+default: &default
+  host: mysqldb
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8mb3_general_ci
+  username: root
+  password: password
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 20 } %>
+  checkout_timeout: 5000
+  variables:
+    sql_mode: STRICT_TRANS_TABLES
+
+development:
+  primary:
+    <<: *default
+    database: emastercard_db
+  queue:
+    <<: *default
+    database: solid_queue_dev
+    migrations_paths: []
+    processing_delay_time: 20
+
+test:
+  primary:
+    <<: *default
+    database: emastercard_db
+  queue:
+    <<: *default
+    database: solid_queue_test
+    migrations_paths: []
+    processing_delay_time: 20
+
+production:
+  primary:
+    <<: *default
+    database: emastercard_db
+  queue:
+    <<: *default
+    database: solid_queue_prod
+    migrations_paths: db/queue_migrate
+    processing_delay_time: 20

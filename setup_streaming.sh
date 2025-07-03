@@ -1,0 +1,1 @@
+docker exec -it emastercard_api rails streaming:setup

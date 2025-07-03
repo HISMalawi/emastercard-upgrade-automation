@@ -164,6 +164,12 @@ To update the frontend's static files do the following:
 
 ## Automation Scripts
 
+## Setup Application for streaming
+
+```bash
+sudo bash setup_streaming.sh
+```
+
 #### Update viral load results bearing =1 to =LDL
 - The script migrates all `HIV viral load` results `=1` to `=LDL`. to run the script, please type the following command
 

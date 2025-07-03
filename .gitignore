@@ -1,5 +1,6 @@
-/api/api-config.yml
-/api/migration-config.yml
-/api/application.yml
-/tmp/
+api/api-config.yml
+api/migration-config.yml
+api/application.yml
+tmp/
 *.sql
+.venv
