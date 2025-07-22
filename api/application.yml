@@ -102,6 +102,5 @@ idsr_sms:
 # test_credentials:
 #   username: admin
 #   password: test
--e 
 password_reset:
   secret_key: CENTRALISED-EMR
