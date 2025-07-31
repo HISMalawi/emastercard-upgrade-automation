@@ -18,6 +18,8 @@ services:
     volumes:
       - ./api/api-config.yml:/opt/BHT-EMR-API/config/database.yml
       - ./api/application.yml:/opt/BHT-EMR-API/config/application.yml
+      - ./api/queue.yml:/opt/BHT-EMR-API/config/queue.yml
+      - ./api/recurring.yml:/opt/BHT-EMR-API/config/recurring.yml
       - ./api/migration-config.yml:/opt/eMastercard2Nart/config.yaml
       - ./tmp:/opt/eMastercard2Nart/tmp
     ports:
