@@ -1,1 +1,0 @@
-import{bv as n}from"./index-f1e5fa33.js";const r={async show(e){return(await n.create({message:e||"Loading...",spinner:"crescent",translucent:!0})).present()},async hide(){n.getTop().then(e=>e?n.dismiss():null)}};export{r as l};
