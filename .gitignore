@@ -4,3 +4,5 @@ api/application.yml
 tmp/
 *.sql
 .venv
+.qodo
+.claude

@@ -9,6 +9,7 @@ import sys
 
 FOLLOW_TAGS = True
 OFFLINE = False
+NO_SETUP_DEPS = False
 REBUILD_FRONTEND = False
 SYSTEMD_CONFIG = True   # Configure systemd to autostart the emastercard application
 UPDATE = False
@@ -202,6 +203,8 @@ def offline_build():
 def update_version(current_version, tags):
     if current_version is None:
         return '0.0.1-0'
+    
+    print ('current_version: {}'.format(current_version))
 
     version_parts = current_version.split('-', 1)
     frontend_version = '-'.join(version_parts[:-1])
@@ -242,7 +245,7 @@ def build():
     tags = version_info.get('tags', {})
 
     if not OFFLINE:
-        setup_dependencies()
+        setup_dependencies() if not NO_SETUP_DEPS else None
         tags['BHT-EMR-API'] = update_repo('https://github.com/HISMalawi/BHT-EMR-API.git', branch='development', tag=tags.get('BHT-EMR-API'))
         os.chdir('tmp/BHT-EMR-API')
         run('git describe > HEAD')
@@ -275,11 +278,12 @@ def read_arguments():
     parser.add_argument('--offline', action='store_true', help='Attempt to build application using cached resources only')
     parser.add_argument('--rebuild-frontend', action='store_true', help='Forces a rebuilding of the frontend')
     parser.add_argument('--update', action='store_true', help='Updates all applications to latest updates/tags')
+    parser.add_argument('--no-setup-deps', action='store_true', help='Skip setup of dependencies')
     
     return parser.parse_args()
 
 def main():
-    global FOLLOW_TAGS, OFFLINE, REBUILD_FRONTEND, SYSTEMD_CONFIG, UPDATE
+    global FOLLOW_TAGS, OFFLINE, REBUILD_FRONTEND, SYSTEMD_CONFIG, UPDATE, NO_SETUP_DEPS
 
     args = read_arguments()
 
@@ -288,6 +292,7 @@ def main():
     if args.rebuild_frontend: REBUILD_FRONTEND = True
     if args.update: UPDATE = True
     if args.no_systemd_config: SYSTEMD_CONFIG = False
+    if args.no_setup_deps: NO_SETUP_DEPS = True
 
         
     if args.package_for_offline:
