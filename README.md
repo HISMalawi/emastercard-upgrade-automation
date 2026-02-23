@@ -167,7 +167,7 @@ To update the frontend's static files do the following:
 ## Setup Application for streaming
 
 ```bash
-sudo bash setup_streaming.sh
+sudo docker-compose exec api setup_streaming.sh
 ```
 
 #### Update viral load results bearing =1 to =LDL
