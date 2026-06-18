@@ -1,0 +1,1 @@
+System.register(["./index-legacy-799e4dbb.js"],function(e,s){"use strict";var t;return{setters:[e=>{t=e.br}],execute:function(){e("l",{show:async e=>(await t.create({message:e||"Loading...",spinner:"crescent",translucent:!0})).present(),async hide(){await t.getTop()&&await t.dismiss()}})}}});
